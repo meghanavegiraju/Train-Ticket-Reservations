@@ -254,22 +254,22 @@ jobs:
           docker push $REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $REGISTRY/$ECR_REPOSITORY:latest
 
-      # 9. Download the current ECS task definition
-      - name: Download ECS Task Definition
-        run: |
-          aws ecs describe-task-definition \
-            --task-definition trainbook-task \
-            --query taskDefinition \
-            --output json > task-definition.json
+      # # 9. Download the current ECS task definition
+      # - name: Download ECS Task Definition
+      #   run: |
+      #     aws ecs describe-task-definition \
+      #       --task-definition trainbook-task \
+      #       --query taskDefinition \
+      #       --output json > task-definition.json
 
-      # 10. Render task definition with the new image
-      - name: Update ECS Task Definition
-        id: task-def
-        uses: aws-actions/amazon-ecs-render-task-definition@v1
-        with:
-          task-definition: task-definition.json
-          container-name: ${{ env.CONTAINER_NAME }}
-          image: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
+      # # 10. Render task definition with the new image
+      # - name: Update ECS Task Definition
+      #   id: task-def
+      #   uses: aws-actions/amazon-ecs-render-task-definition@v1
+      #   with:
+      #     task-definition: task-definition.json
+      #     container-name: ${{ env.CONTAINER_NAME }}
+      #     image: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
 
       # # 11. Deploy updated task definition to ECS
       # - name: Deploy to ECS
